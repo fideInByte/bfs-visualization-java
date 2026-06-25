@@ -1,0 +1,24 @@
+X
+T
+X: A,4 B,6 C,5
+A: X,4 D,3 E,6 F,5
+B: X,6 G,4 H,7 I,5
+C: X,5 J,6 K,4 L,5
+D: A,3 M,5
+E: A,6 N,4
+F: A,5 O,6
+G: B,4 P,5
+H: B,7 Q,6
+I: B,5 R,5
+J: C,6 S,4
+K: C,4 T,6
+L: C,5 U,5
+M: D,5
+N: E,4
+O: F,6
+P: G,5
+Q: H,6
+R: I,5
+S: J,4
+T: K,6
+U: L,5

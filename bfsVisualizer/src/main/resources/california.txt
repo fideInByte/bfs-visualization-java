@@ -1,0 +1,10 @@
+San_Francisco
+San_Diego
+San_Francisco: Sacramento,140 San_Jose,77 Fresno,305
+Sacramento: San_Francisco,140 Reno,218 Fresno,275
+San_Jose: San_Francisco,77 Fresno,235 Los_Angeles,340
+Fresno: San_Francisco,305 Sacramento,275 San_Jose,235 Bakersfield,177
+Reno: Sacramento,218
+Bakersfield: Fresno,177 Los_Angeles,180
+Los_Angeles: San_Jose,340 Bakersfield,180 San_Diego,195
+San_Diego: Los_Angeles,195

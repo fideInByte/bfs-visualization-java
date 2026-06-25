@@ -15,20 +15,20 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.List;
 
-public class Solution{
+public class Node{
 	String state;
 	float cost;
 	int depth;
-	Solution parent = null;
+	Node parent = null;
 	
-	public Solution(String s, float c, Solution p) {
+	public Node(String s, float c, Node p) {
 		state = s;
 		cost = c;
 		depth = 0;
 		parent = p;
 	}
 	
-	public Solution(String s, float c, int d, Solution p) {
+	public Node(String s, float c, int d, Node p) {
 		state = s;
 		cost = c;
 		depth = d;

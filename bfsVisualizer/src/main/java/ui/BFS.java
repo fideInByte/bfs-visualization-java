@@ -14,16 +14,16 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class BFS {//remove what is not needed!!!
+public class BFS {
 	private Map<String, Map<String, Float>> stateSpace = new HashMap<>();
 	
 	private String startState = null;
 	private List<String> targetStates = new LinkedList<>();
 	
-	private Queue<Solution> open = new LinkedList<>();
+	private Queue<Node> open = new LinkedList<>();
 	
-	private List<Solution> tree = new LinkedList<>();
-	private List<Solution> path = new LinkedList<>();
+	private List<Node> tree = new LinkedList<>();
+	private List<Node> path = new LinkedList<>();
 	
 	
 	private Set<String> visitedStates = new HashSet<>();
@@ -33,6 +33,10 @@ public class BFS {//remove what is not needed!!!
 	public Map<String, Map<String, Float>> getStateSpace() {
 		return stateSpace;
 	}
+	
+	public String getStartState() {
+		return startState;
+	}
 
 	public List<BFSEvent> getBfsEvents(){
 		return bfsEvents;
@@ -40,10 +44,6 @@ public class BFS {//remove what is not needed!!!
 	
 	
 	public void run(String[] args) {
-		
-        //System.out.println("Running Java version: " + System.getProperty("java.version"));
-        
-        //System.out.println("Received args: " + Arrays.toString(args));
        
         String stateSpaceFile = null;
         
@@ -71,7 +71,7 @@ public class BFS {//remove what is not needed!!!
             while ((line = br.readLine()) != null) {
             	line = line.trim();
             	//comments
-            	if(line.contains("#") || line.isEmpty()) {
+            	if(line.isEmpty()) {
             		continue;
             	}else if(startState==null) {
             		//first line
@@ -84,22 +84,49 @@ public class BFS {//remove what is not needed!!!
             	}
             		
             	
-                
-                String[] words = line.split(" ");
-                String state = words[0].substring(0, words[0].length()-1);//remove ':' from state
-                
-                Map<String, Float> succ = new TreeMap<>();
-                	                
-                for(int i = 1; i < words.length; i++) {
-                	System.out.println("Gledamo words[i]="+words[i]);
-                	
-                	String next_state = words[i].split(",")[0];
-                	System.out.println("next_state je "+words);
-                	String cost = words[i].split(",")[1];
-                	succ.put(next_state, Float.parseFloat(cost));
-                }
-                
-                stateSpace.put(state, succ);
+       
+            	
+            	//remove comment if there is one
+            	int commentIndex = line.indexOf("#");
+            	if (commentIndex != -1) {
+            	    line = line.substring(0, commentIndex).trim();
+            	}
+
+            	if (line.isEmpty()) {
+            	    continue;
+            	}
+
+            	//"state : successors"
+            	String[] parts = line.split("\\s*:\\s*", 2);
+            	if (parts.length != 2) {
+            	    throw new IllegalArgumentException("Invalid line format: " + line);
+            	}
+
+            	String state = parts[0].trim();
+            	String rightSide = parts[1].trim();
+
+            	Map<String, Float> succ = new TreeMap<>();
+
+            	if (!rightSide.isEmpty()) {
+            	    String[] transitions = rightSide.split("\\s+");
+
+            	    for (String transition : transitions) {
+            	        transition = transition.trim();
+            	        if (transition.isEmpty()) continue;
+
+            	        String[] edgeParts = transition.split("\\s*,\\s*", 2);
+            	        if (edgeParts.length != 2) {
+            	            throw new IllegalArgumentException("Invalid transition: " + transition + " in line: " + line);
+            	        }
+
+            	        String nextState = edgeParts[0].trim();
+            	        String costText = edgeParts[1].trim();
+
+            	        succ.put(nextState, Float.parseFloat(costText));
+            	    }
+            	}
+
+            	stateSpace.put(state, succ);
                 
                 
             }
@@ -112,25 +139,23 @@ public class BFS {//remove what is not needed!!!
       
         
     	System.out.println("# BFS");
-    	Solution goal = bfsAlgorithm();
+    	Node goal = bfsAlgorithm();
     	if(goal == null) {
-    		System.out.println("[FOUND_SOLUTION]: no");
+    		System.out.println("[FOUND NODE]: no");
     	}else {
-    		System.out.println("[FOUND_SOLUTION]: yes");
+    		System.out.println("[FOUND NODE]: yes");
 
     		//System.out.printf("TREE: ");
-    		//printListWithSolutions(tree);
-    		System.out.println("[STATES_VISITED]: "+tree.size());
+    		System.out.println("[STATES VISITED]: "+tree.size());
     		buildPathFromGoal(goal);
     		
-    		//printListWithSolutions(path);
-    		System.out.println("[PATH_LENGTH]: "+(path.size()));
+    		System.out.println("[PATH LENGTH]: "+(path.size()));
     		
-    		System.out.println("[TOTAL_COST]: "+goal.cost);
+    		System.out.println("[TOTAL COST]: "+goal.cost);
     		
     		System.out.printf("[PATH]: ");
     		for(int i = 0; i < path.size()-1; i++) {
-    			System.out.printf(path.get(i).state+" => ");
+    			System.out.printf(path.get(i).state+" -> ");
     		}
     		System.out.println(path.get(path.size()-1).state);
 
@@ -141,10 +166,9 @@ public class BFS {//remove what is not needed!!!
 	
 	
 
-	Solution bfsAlgorithm() {
+	Node bfsAlgorithm() {
 		bfsEvents.clear();//anim
-		//System.out.println("bfsAlgorithm called");
-		Solution start = new Solution(startState, 0, null);
+		Node start = new Node(startState, 0, null);
 		open.add(start);
 		visitedStates.add(start.state);
 		
@@ -152,8 +176,8 @@ public class BFS {//remove what is not needed!!!
 		
 		
 		while(!open.isEmpty()) {
-			//Solution head = open.get(0);
-			Solution head = open.poll();
+			
+			Node head = open.poll();
 			bfsEvents.add(new BFSEvent(EventStates.DEQUEUE, head.state));//anim
 			
 			tree.add(head);
@@ -174,7 +198,7 @@ public class BFS {//remove what is not needed!!!
 		return null;
 	}
 	
-	boolean insertOpenBack(Solution parent) {
+	boolean insertOpenBack(Node parent) {
 		if(!stateSpace.containsKey(parent.state)) {
 			return false;
 		}
@@ -188,7 +212,7 @@ public class BFS {//remove what is not needed!!!
 			
 			visitedStates.add(child.getKey());	
 			float addCost = child.getValue();
-			open.add(new Solution(child.getKey(), parent.cost + addCost, parent.depth + 1, parent));
+			open.add(new Node(child.getKey(), parent.cost + addCost, parent.depth + 1, parent));
 			
 			bfsEvents.add(new BFSEvent(EventStates.ENQUEUE, child.getKey()));//anim
 			 
@@ -197,19 +221,17 @@ public class BFS {//remove what is not needed!!!
 		return true;
 	}
 	
-	void buildPathFromGoal(Solution goal) {
+	void buildPathFromGoal(Node goal) {
 		path.clear();
 	
-		for(Solution cur = goal; cur != null; cur = cur.parent)
+		for(Node cur = goal; cur != null; cur = cur.parent) {
 			path.add(cur);
+			bfsEvents.add(new BFSEvent(EventStates.PATH, cur.state));//anim
+		}
+			
 		
 		Collections.reverse(path);
 		
-		//anim
-		for(Solution s : path) {
-			bfsEvents.add(new BFSEvent(EventStates.PATH, s.state));//anim
-		}
-		//anim
 		return;
 	}
 	

@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>git.visualization</groupId>
-  <artifactId>lab1java</artifactId>
+  <groupId>io.github.fideInByte</groupId>
+  <artifactId>bfs-visualizer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>bfsVisualization</name>
+  <name>BFS Visualizer</name>
 
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
