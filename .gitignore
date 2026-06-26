@@ -1,0 +1,16 @@
+#Eclipse
+.metadata/
+**/.project
+**/.classpath
+**/.settings/
+
+#Maven
+**/target/
+
+#Other IDEs/editors
+.idea/
+.vscode/
+
+#OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+alpha
+xi
+alpha: zeta,2 delta,16
+zeta: alpha,2 delta,18 kappa,16
+beta: iota,10 epsilon,8 gamma,9
+iota: beta,10 epsilon,14 gamma,15 lambda,11
+epsilon: beta,8 xi,12 theta,13 iota,14
+gamma: beta,9 delta,19 iota,15 lambda,16
+delta: alpha,16 gamma,19 zeta,18 theta,17 lambda,11 eta,14 mu,7
+theta: delta,17 epsilon,13
+lambda: delta,11
+xi: epsilon,12
+kappa: zeta,16
+eta: delta,17
+lambda: nu,12 gamma,16 iota,11
+nu: lambda,12
+mu: delta,7
