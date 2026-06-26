@@ -25,7 +25,7 @@ This visualizer demonstrates **Breadth-First Search**, which explores nodes **le
 Important note:
 
 * BFS finds the path with the **fewest steps / edges**
-* during BFS, each expansion step is treated uniformly
+* during BFS, each expansion step is treated uniformly; BFS ignores edge weights while choosing which node to expand next
 * the displayed total path cost is determined afterwards from the costs defined in the input file
 
 ## Running the Project
