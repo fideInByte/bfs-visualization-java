@@ -16,7 +16,7 @@ The application reads a graph definition from a `.txt` file, runs BFS, and displ
 ## Video
 
 A short video demonstration of the project:
-`<link>`
+`https://youtu.be/VT-ZhxdzErE`
 
 ## How BFS Works in This Project
 
